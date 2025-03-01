@@ -59,7 +59,7 @@
 <body>
 
     <!-- Audio -->
-    <audio id="birthday-audio" loop>
+    <audio id="birthday-audio">
         <source src="happy-birthday-258264.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -78,50 +78,28 @@
             let audio = document.getElementById("birthday-audio");
             audio.play(); // Start music
 
-            // Confetti explosion
-            let duration = 3 * 1000; // 3 seconds
-            let end = Date.now() + duration;
+            // Celebration effects timeline
+            triggerEffect(0);  // 🎊 Confetti at start
+            triggerEffect(5000); // 🎆 Fireworks at 5s
+            triggerEffect(10000); // 🎈 Balloons at 10s
+            triggerEffect(20000); // 🎇 More fireworks at 20s
+            triggerEffect(30000); // 💕 Heart-shaped confetti at 30s
+            triggerEffect(40000); // 🎊 More confetti at 40s
+            triggerEffect(50000); // 🎆 Grand finale at 50s
+        }
 
-            (function frame() {
-                confetti({
-                    particleCount: 10,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            })();
-
-            // 🎆 Fireworks at 5 seconds
+        function triggerEffect(delay) {
             setTimeout(() => {
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(() => {
-                        confetti({
-                            particleCount: 100,
-                            spread: 120,
-                            startVelocity: 50,
-                            origin: { y: Math.random() * 0.5 }
-                        });
-                    }, i * 500);
-                }
-            }, 5000);
-
-            // 🎈 Balloons floating at 10 seconds
-            setTimeout(() => {
-                for (let i = 0; i < 10; i++) {
-                    setTimeout(() => {
-                        confetti({
-                            particleCount: 5,
-                            spread: 80,
-                            shapes: ['circle'],
-                            scalar: 2,
-                            origin: { x: Math.random(), y: 1 }
-                        });
-                    }, i * 300);
-                }
-            }, 10000);
+                let effects = [
+                    { particleCount: 10, spread: 70, origin: { y: 0.6 } },
+                    { particleCount: 100, spread: 120, startVelocity: 50, origin: { y: Math.random() * 0.5 } },
+                    { particleCount: 5, spread: 80, shapes: ['circle'], scalar: 2, origin: { x: Math.random(), y: 1 } },
+                    { particleCount: 50, spread: 150, startVelocity: 60, scalar: 1.5 }
+                ];
+                
+                let effect = effects[Math.floor(Math.random() * effects.length)];
+                confetti(effect);
+            }, delay);
         }
     </script>
 
