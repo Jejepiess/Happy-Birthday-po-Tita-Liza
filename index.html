@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextParticle Party Hat Effect</title>
+    <title>Happy Birthday!</title>
+    <script src="https://cdn.jsdelivr.net/npm/nextparticle@latest"></script>
     <style>
         body {
             margin: 0;
@@ -12,47 +13,44 @@
         }
         canvas {
             display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
         }
     </style>
 </head>
 <body>
-    <img id="party-hat" src="https://i.postimg.cc/SsqZzN8H/download-1.jpg" style="display: none;">
-    
-    <!-- Load NextParticle library -->
-    <script src="https://cdn.jsdelivr.net/npm/nextparticle@1.0.1/dist/NextParticle.min.js"></script>
-
+    <img id="party-hat" src="your-party-hat-image.png" style="display: none;">
     <script>
-        window.onload = function() {
-            if (typeof NextParticle === 'undefined') {
-                console.error("NextParticle library failed to load.");
-                return;
-            }
+        window.onload = function () {
+            setTimeout(() => {
+                console.log("NextParticle Type:", typeof NextParticle);
 
-            const settings = {
-                particleGap: 3,
-                particleSize: 2,
-                mouseForce: 25,
-                noise: 7,
-                layerCount: 4,
-                layerDistance: 6
-            };
+                if (typeof NextParticle === "undefined") {
+                    console.error("NextParticle still failed to load. Check the script source.");
+                    return;
+                }
 
-            const partyHat = new NextParticle({
-                renderer: 'webgl',
-                image: document.querySelector('#party-hat'),
-                width: window.innerWidth,
-                height: window.innerHeight,
-                particleGap: settings.particleGap,
-                particleSize: settings.particleSize,
-                mouseForce: settings.mouseForce,
-                noise: settings.noise,
-                layerCount: settings.layerCount,
-                layerDistance: settings.layerDistance,
-                shape: 'circle' // Simulating cake-like particles
-            });
+                const settings = {
+                    particleGap: 3,
+                    particleSize: 2,
+                    mouseForce: 25,
+                    noise: 7,
+                    layerCount: 4,
+                    layerDistance: 6
+                };
+
+                const partyHat = new NextParticle({
+                    renderer: "webgl",
+                    image: document.querySelector("#party-hat"),
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    particleGap: settings.particleGap,
+                    particleSize: settings.particleSize,
+                    mouseForce: settings.mouseForce,
+                    noise: settings.noise,
+                    layerCount: settings.layerCount,
+                    layerDistance: settings.layerDistance,
+                    shape: "circle"
+                });
+            }, 2000); // Delay to ensure script loads properly
         };
     </script>
 </body>
