@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday!</title>
-    <script src="https://unpkg.com/tsparticles@3.8.1/tsparticles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.8.1/tsparticles.bundle.min.js" defer></script>
     <style>
         body {
             margin: 0;
@@ -23,7 +23,12 @@
 <body>
     <div id="tsparticles"></div>
     <script>
-        window.onload = function () {
+        window.addEventListener("load", function () {
+            if (typeof tsParticles === "undefined") {
+                console.error("tsParticles failed to load!");
+                return;
+            }
+
             tsParticles.load("tsparticles", {
                 particles: {
                     number: { value: 100 },
@@ -47,7 +52,7 @@
                     }
                 }
             });
-        };
+        });
     </script>
 </body>
 </html>
