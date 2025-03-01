@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
+    <title>Happy Birthday Tita Liza!</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1"></script>
     <style>
         body {
             margin: 0;
@@ -16,14 +17,12 @@
             background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffdde1);
             text-align: center;
             font-family: Arial, sans-serif;
-            overflow: hidden;
         }
         .container {
             background: rgba(255, 255, 255, 0.3);
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            position: relative;
         }
         img {
             width: 200px;
@@ -32,29 +31,6 @@
             border-radius: 50%;
             border: 5px solid white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 2;
-        }
-        .balloons {
-            position: absolute;
-            top: 20px;
-            width: 100%;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        .balloon {
-            width: 40px;
-            height: 60px;
-            background-color: red;
-            border-radius: 50%;
-            position: absolute;
-            animation: float 3s ease-in-out infinite alternate;
-        }
-        @keyframes float {
-            from { transform: translateY(0); }
-            to { transform: translateY(-20px); }
         }
         h1 {
             font-size: 2.5em;
@@ -64,126 +40,123 @@
             font-size: 1.2em;
             color: white;
         }
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            background-color: #ff758c;
+        .play-button {
+            background: #ff6b81;
             color: white;
+            font-size: 1.2em;
+            padding: 15px 30px;
+            border-radius: 25px;
             border: none;
-            border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
-        button:hover {
-            background-color: #ff5274;
+        .balloons {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
         }
-        .cute-cat {
-            width: 150px;
-            height: auto;
-            margin-top: 15px;
-            animation: bounce 1s ease-in-out infinite alternate;
+        .balloon {
+            width: 40px;
+            height: 60px;
+            border-radius: 50%;
+            background: red;
+            position: relative;
+            animation: float 3s infinite alternate ease-in-out;
         }
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
+        .balloon:nth-child(2) { background: blue; animation-delay: 0.5s; }
+        .balloon:nth-child(3) { background: yellow; animation-delay: 1s; }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Audio -->
-    <audio id="birthday-audio">
-        <source src="happy-birthday-258264.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <div class="balloons">
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+    </div>
 
     <div class="container">
         <h1>Happy Birthday!</h1>
-        
-        <!-- Floating balloons -->
-        <div class="balloons">
-            <div class="balloon" style="background-color: red; left: -50px;"></div>
-            <div class="balloon" style="background-color: blue; left: 0px;"></div>
-            <div class="balloon" style="background-color: yellow; right: 0px;"></div>
-            <div class="balloon" style="background-color: pink; right: -50px;"></div>
-        </div>
-
         <img src="tita-liza.jpg" alt="Birthday Person">
         <p>"Wishing you all the happiness and joy on your special day. Happy Birthday po Tita Liza!"</p>
-        
-        <!-- Cute cat below -->
-        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Cute Cat" class="cute-cat">
-
-        <button onclick="startCelebration()">🎊 Mag wish po kayo Tita Liza tas pindutin nyo po to 🎊</button>
     </div>
 
-    <!-- Confetti and Effects Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
+    <button class="play-button" onclick="startCelebration()">
+        🎉 Mag wish po kayo Tita Liza tas pindutin nyo po to 🎉
+    </button>
+
+    <audio id="birthday-audio" src="happy-birthday-258264.mp3"></audio>
+
     <script>
         function startCelebration() {
             let audio = document.getElementById("birthday-audio");
-            audio.play(); // Start music
+            audio.play();
 
-            // 🎉 Keep the exploding confetti effect at the beginning
+            // Big Confetti Explosion at Start
             bigConfettiExplosion();
 
-            // Celebration effects timeline
-            triggerEffect(10000); // 🎈 Balloons at 10s
-            triggerEffect(20000); // 🎇 Fireworks at 20s
-            heartConfetti(30000); // 💕 Heart-shaped confetti at 30s
-            triggerEffect(40000); // 🎊 More confetti at 40s
-            bigFinale(50000); // 🎆 Grand finale at 50s
+            // Effects at different parts of the song
+            setTimeout(() => triggerEffect(), 10000); // At 10s
+            setTimeout(() => triggerEffect(), 20000); // At 20s
+            setTimeout(() => heartConfetti(), 30000); // At 30s
+            setTimeout(() => triggerEffect(), 40000); // At 40s
+            setTimeout(() => bigFinale(), 50000); // Grand finale
         }
 
         function bigConfettiExplosion() {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 10; i++) {  
                 setTimeout(() => {
                     confetti({
-                        particleCount: 100,
+                        particleCount: 200, 
                         spread: 360,
-                        startVelocity: 50,
-                        scalar: 1.5
+                        startVelocity: 80, 
+                        scalar: 2 
                     });
-                }, i * 200);
+                }, i * 150); 
             }
         }
 
-        function triggerEffect(delay) {
-            setTimeout(() => {
-                confetti({
-                    particleCount: 50,
-                    spread: 120,
-                    startVelocity: 50
-                });
-            }, delay);
+        function triggerEffect() {
+            confetti({
+                particleCount: 100,
+                spread: 180,
+                startVelocity: 50
+            });
         }
 
-        function heartConfetti(delay) {
-            setTimeout(() => {
-                confetti({
-                    particleCount: 50,
-                    spread: 150,
-                    startVelocity: 50,
-                    shapes: ['circle'], // Simulating heart confetti
-                    scalar: 1.8
-                });
-            }, delay);
+        function heartConfetti() {
+            confetti({
+                particleCount: 50,
+                spread: 100,
+                startVelocity: 40,
+                scalar: 1.5,
+                colors: ['#ff69b4', '#ff1493']
+            });
         }
 
-        function bigFinale(delay) {
-            setTimeout(() => {
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        confetti({
-                            particleCount: 150,
-                            spread: 180,
-                            startVelocity: 70,
-                            scalar: 2
-                        });
-                    }, i * 300);
-                }
-            }, delay);
+        function bigFinale() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 150,
+                        spread: 360,
+                        startVelocity: 70,
+                        scalar: 2
+                    });
+                }, i * 300);
+            }
         }
     </script>
 
