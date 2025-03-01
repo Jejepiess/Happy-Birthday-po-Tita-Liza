@@ -19,65 +19,41 @@
     </style>
 </head>
 <body>
-
-    <!-- Hidden Image for Party Hat -->
     <img id="party-hat" src="https://i.postimg.cc/SsqZzN8H/download-1.jpg" style="display: none;">
-
-    <!-- Load NextParticle (Main CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/nextparticle@latest/dist/NextParticle.min.js"></script>
     
-    <!-- Fallback CDN if the first one fails -->
-    <script>
-        setTimeout(() => {
-            if (typeof NextParticle === "undefined") {
-                console.warn("NextParticle failed to load, trying alternative CDN...");
-                let fallbackScript = document.createElement("script");
-                fallbackScript.src = "https://cdn.jsdelivr.net/gh/matteobruni/tsparticles/next/next.min.js";
-                document.body.appendChild(fallbackScript);
-            }
-        }, 2000);
-    </script>
+    <!-- Load NextParticle library -->
+    <script src="https://cdn.jsdelivr.net/npm/nextparticle@1.0.1/dist/NextParticle.min.js"></script>
 
-    <!-- Main Script -->
     <script>
         window.onload = function() {
-            // Wait for NextParticle to load
-            setTimeout(() => {
-                if (typeof NextParticle === "undefined") {
-                    console.error("❌ NextParticle is still undefined! Check your script sources.");
-                    return;
-                }
+            if (typeof NextParticle === 'undefined') {
+                console.error("NextParticle library failed to load.");
+                return;
+            }
 
-                console.log("✅ NextParticle loaded successfully!");
+            const settings = {
+                particleGap: 3,
+                particleSize: 2,
+                mouseForce: 25,
+                noise: 7,
+                layerCount: 4,
+                layerDistance: 6
+            };
 
-                const settings = {
-                    particleGap: 4,
-                    particleSize: 3,
-                    mouseForce: 30,
-                    noise: 8,
-                    layerCount: 5,
-                    layerDistance: 7
-                };
-
-                // Initialize NextParticle Effect
-                const partyHat = new NextParticle({
-                    renderer: 'webgl',
-                    image: document.querySelector('#party-hat'),
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                    particleGap: settings.particleGap,
-                    particleSize: settings.particleSize,
-                    mouseForce: settings.mouseForce,
-                    noise: settings.noise,
-                    layerCount: settings.layerCount,
-                    layerDistance: settings.layerDistance
-                });
-
-                // Start Animation
-                partyHat.start();
-            }, 2500);
+            const partyHat = new NextParticle({
+                renderer: 'webgl',
+                image: document.querySelector('#party-hat'),
+                width: window.innerWidth,
+                height: window.innerHeight,
+                particleGap: settings.particleGap,
+                particleSize: settings.particleSize,
+                mouseForce: settings.mouseForce,
+                noise: settings.noise,
+                layerCount: settings.layerCount,
+                layerDistance: settings.layerDistance,
+                shape: 'circle' // Simulating cake-like particles
+            });
         };
     </script>
-
 </body>
 </html>
