@@ -25,29 +25,34 @@
     <script>
         window.onload = function () {
             tsParticles.load("tsparticles", {
+                fullScreen: { enable: true },
+                background: { color: "#000000" },
                 particles: {
-                    number: { value: 100 },
-                    color: { value: "#ffffff" },
+                    number: { value: 150 },
+                    color: { value: ["#ffffff", "#ff0000", "#ffff00"] },
                     shape: { type: "circle" },
-                    opacity: { value: 0.7 },
-                    size: { value: 3 },
+                    opacity: { value: 1 },
+                    size: { value: 5 },
                     move: {
                         enable: true,
-                        speed: 2
+                        speed: 3,
+                        direction: "none",
+                        random: false,
+                        straight: false
                     }
                 },
                 interactivity: {
                     events: {
-                        onhover: { enable: true, mode: "repulse" },
+                        onhover: { enable: true, mode: "bubble" },
                         onclick: { enable: true, mode: "push" }
                     },
                     modes: {
-                        repulse: { distance: 100 },
+                        bubble: { distance: 200, size: 10, duration: 1 },
                         push: { quantity: 4 }
                     }
                 }
             }).then(() => {
-                console.log("tsParticles successfully loaded!");
+                console.log("tsParticles successfully loaded and configured!");
             }).catch((error) => {
                 console.error("Error loading tsParticles:", error);
             });
@@ -55,3 +60,4 @@
     </script>
 </body>
 </html>
+
