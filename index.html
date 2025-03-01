@@ -23,6 +23,7 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
         img {
             width: 200px;
@@ -31,6 +32,29 @@
             border-radius: 50%;
             border: 5px solid white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        .balloons {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .balloon {
+            width: 40px;
+            height: 60px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            animation: float 3s ease-in-out infinite alternate;
+        }
+        @keyframes float {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
         }
         h1 {
             font-size: 2.5em;
@@ -54,6 +78,16 @@
         button:hover {
             background-color: #ff5274;
         }
+        .cute-cat {
+            width: 150px;
+            height: auto;
+            margin-top: 15px;
+            animation: bounce 1s ease-in-out infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body>
@@ -66,8 +100,21 @@
 
     <div class="container">
         <h1>Happy Birthday!</h1>
+        
+        <!-- Floating balloons -->
+        <div class="balloons">
+            <div class="balloon" style="background-color: red; left: -50px;"></div>
+            <div class="balloon" style="background-color: blue; left: 0px;"></div>
+            <div class="balloon" style="background-color: yellow; right: 0px;"></div>
+            <div class="balloon" style="background-color: pink; right: -50px;"></div>
+        </div>
+
         <img src="tita-liza.jpg" alt="Birthday Person">
         <p>"Wishing you all the happiness and joy on your special day. Happy Birthday po Tita Liza!"</p>
+        
+        <!-- Cute cat below -->
+        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Cute Cat" class="cute-cat">
+
         <button onclick="startCelebration()">🎊 Mag wish po kayo Tita Liza tas pindutin nyo po to 🎊</button>
     </div>
 
@@ -78,31 +125,67 @@
             let audio = document.getElementById("birthday-audio");
             audio.play(); // Start music
 
+            // 🎉 Keep the exploding confetti effect at the beginning
+            bigConfettiExplosion();
+
             // Celebration effects timeline
-            triggerEffect(0);  // 🎊 Confetti at start
-            triggerEffect(5000); // 🎆 Fireworks at 5s
             triggerEffect(10000); // 🎈 Balloons at 10s
-            triggerEffect(20000); // 🎇 More fireworks at 20s
-            triggerEffect(30000); // 💕 Heart-shaped confetti at 30s
+            triggerEffect(20000); // 🎇 Fireworks at 20s
+            heartConfetti(30000); // 💕 Heart-shaped confetti at 30s
             triggerEffect(40000); // 🎊 More confetti at 40s
-            triggerEffect(50000); // 🎆 Grand finale at 50s
+            bigFinale(50000); // 🎆 Grand finale at 50s
+        }
+
+        function bigConfettiExplosion() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 100,
+                        spread: 360,
+                        startVelocity: 50,
+                        scalar: 1.5
+                    });
+                }, i * 200);
+            }
         }
 
         function triggerEffect(delay) {
             setTimeout(() => {
-                let effects = [
-                    { particleCount: 10, spread: 70, origin: { y: 0.6 } },
-                    { particleCount: 100, spread: 120, startVelocity: 50, origin: { y: Math.random() * 0.5 } },
-                    { particleCount: 5, spread: 80, shapes: ['circle'], scalar: 2, origin: { x: Math.random(), y: 1 } },
-                    { particleCount: 50, spread: 150, startVelocity: 60, scalar: 1.5 }
-                ];
-                
-                let effect = effects[Math.floor(Math.random() * effects.length)];
-                confetti(effect);
+                confetti({
+                    particleCount: 50,
+                    spread: 120,
+                    startVelocity: 50
+                });
+            }, delay);
+        }
+
+        function heartConfetti(delay) {
+            setTimeout(() => {
+                confetti({
+                    particleCount: 50,
+                    spread: 150,
+                    startVelocity: 50,
+                    shapes: ['circle'], // Simulating heart confetti
+                    scalar: 1.8
+                });
+            }, delay);
+        }
+
+        function bigFinale(delay) {
+            setTimeout(() => {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        confetti({
+                            particleCount: 150,
+                            spread: 180,
+                            startVelocity: 70,
+                            scalar: 2
+                        });
+                    }, i * 300);
+                }
             }, delay);
         }
     </script>
 
 </body>
 </html>
-
