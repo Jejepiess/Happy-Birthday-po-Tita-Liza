@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday!</title>
-    <script src="https://cdn.jsdelivr.net/npm/nextparticle@latest"></script>
+    <script src="https://unpkg.com/tsparticles@3.8.1/tsparticles.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -17,38 +17,33 @@
     </style>
 </head>
 <body>
-    <img id="party-hat" src="your-party-hat-image.png" style="display: none;">
     <script>
         window.onload = function () {
             setTimeout(() => {
-                console.log("NextParticle Type:", typeof NextParticle);
+                console.log("tsParticles Type:", typeof tsParticles);
 
-                if (typeof NextParticle === "undefined") {
-                    console.error("NextParticle still failed to load. Check the script source.");
+                if (typeof tsParticles === "undefined") {
+                    console.error("tsParticles failed to load. Check the script source.");
                     return;
                 }
 
-                const settings = {
-                    particleGap: 3,
-                    particleSize: 2,
-                    mouseForce: 25,
-                    noise: 7,
-                    layerCount: 4,
-                    layerDistance: 6
-                };
-
-                const partyHat = new NextParticle({
-                    renderer: "webgl",
-                    image: document.querySelector("#party-hat"),
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                    particleGap: settings.particleGap,
-                    particleSize: settings.particleSize,
-                    mouseForce: settings.mouseForce,
-                    noise: settings.noise,
-                    layerCount: settings.layerCount,
-                    layerDistance: settings.layerDistance,
-                    shape: "circle"
+                tsParticles.load("tsparticles", {
+                    particles: {
+                        number: { value: 100 },
+                        shape: { type: "circle" },
+                        size: { value: 3 },
+                        move: {
+                            enable: true,
+                            speed: 2,
+                        },
+                        color: { value: "#ffcc00" },
+                    },
+                    interactivity: {
+                        events: {
+                            onHover: { enable: true, mode: "repulse" },
+                            onClick: { enable: true, mode: "push" }
+                        }
+                    }
                 });
             }, 2000); // Delay to ensure script loads properly
         };
