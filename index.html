@@ -13,9 +13,10 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #ffdde1);
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffdde1);
             text-align: center;
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
         .container {
             background: rgba(255, 255, 255, 0.3);
@@ -23,18 +24,9 @@
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             position: relative;
+            z-index: 2;
         }
-        .image-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-        .cake {
-            width: 80px;
-            height: 80px;
-        }
-        img.profile {
+        img {
             width: 200px;
             height: 200px;
             object-fit: cover;
@@ -50,66 +42,125 @@
             font-size: 1.2em;
             color: white;
         }
-        .play-button {
-            background-color: #ff6b81;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            color: white;
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
             font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: #ff758c;
+            color: white;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
-            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
-        .confetti {
+        button:hover {
+            background-color: #ff5274;
+        }
+        .balloons {
             position: absolute;
-            width: 5px;
-            height: 5px;
-            background: gold;
-            opacity: 0;
-            animation: explode 1s ease-out forwards;
+            top: 20%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
         }
-        @keyframes explode {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-100px) scale(2); opacity: 0; }
+        .balloon {
+            width: 80px;
+            height: 100px;
+            background: radial-gradient(circle, red, darkred);
+            border-radius: 50%;
+            position: relative;
+            animation: float 4s ease-in-out infinite alternate;
+        }
+        .balloon::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: white;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+        }
+        @keyframes float {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-20px);
+            }
         }
     </style>
 </head>
 <body>
-    <audio id="birthday-song">
+
+    <audio id="birthday-audio" loop>
         <source src="happy-birthday-258264.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
+    <div class="balloons">
+        <div class="balloon" style="background: radial-gradient(circle, blue, darkblue);"></div>
+        <div class="balloon" style="background: radial-gradient(circle, yellow, orange);"></div>
+        <div class="balloon" style="background: radial-gradient(circle, green, darkgreen);"></div>
+        <div class="balloon" style="background: radial-gradient(circle, purple, darkviolet);"></div>
+    </div>
+
     <div class="container">
         <h1>Happy Birthday!</h1>
-        <div class="image-wrapper">
-            <img src="cake.png" class="cake" alt="Cake">
-            <img src="tita-liza.jpg" class="profile" alt="Birthday Person">
-            <img src="cake.png" class="cake" alt="Cake">
-        </div>
+        <img src="tita-liza.jpg" alt="Birthday Person">
         <p>"Wishing you all the happiness and joy on your special day. Happy Birthday po Tita Liza!"</p>
+        <button onclick="startCelebration()">🎊 Mag wish po kayo Tita Liza tas pindutin nyo po to 🎊</button>
     </div>
-    <button class="play-button" onclick="playMusicAndConfetti()">🎉 Mag wish po kayo Tita Liza tas pindutin nyo po to 🎉</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
     <script>
-        function playMusicAndConfetti() {
-            document.getElementById('birthday-song').play();
-            for (let i = 0; i < 30; i++) {
-                let confetti = document.createElement("div");
-                confetti.classList.add("confetti");
-                confetti.style.left = `${Math.random() * 100}px`;
-                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
-                document.querySelector(".play-button").appendChild(confetti);
-                setTimeout(() => confetti.remove(), 1000);
-            }
+        function startCelebration() {
+            let audio = document.getElementById("birthday-audio");
+            audio.play();
+
+            let duration = 3 * 1000;
+            let end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 10,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+
+            setTimeout(() => {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        confetti({
+                            particleCount: 100,
+                            spread: 120,
+                            startVelocity: 50,
+                            origin: { y: Math.random() * 0.5 }
+                        });
+                    }, i * 500);
+                }
+            }, 5000);
+
+            setTimeout(() => {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        confetti({
+                            particleCount: 5,
+                            spread: 80,
+                            shapes: ['circle'],
+                            scalar: 2,
+                            origin: { x: Math.random(), y: 1 }
+                        });
+                    }, i * 300);
+                }
+            }, 10000);
         }
     </script>
 </body>
 </html>
 
-        }
-    </script>
-
-</body>
-</html>
